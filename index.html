@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="A modern wedding invitation, guest itinerary, RSVP and venue guide.">
+  <title>Mira & Ken — Our Wedding</title>
+  <!-- Tailwind CSS v4 browser build. For prototypes only; compile with Tailwind CLI before production. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;650;700&family=Jost:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
+  <!-- QR rendering uses a small third-party browser library. Local previews never create a misleading share link. -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root { --paper:#f7f5ef; --white:#fffefa; --ink:#343a34; --muted:#7d8077; --olive:#637567; --rose:#b8998f; --line:#e2ded5; --soft:#eeefe9; --sand:#e9e4d9; --gold:#ba9d77; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:'DM Sans',Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    button,input,select,textarea { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible { outline:2px solid #728e7b; outline-offset:4px; }
+    a { color:inherit; text-decoration:none; }
+    .page-width { width:min(1160px, calc(100% - 72px)); margin-inline:auto; }
+    .serif { font-family:'Italiana', 'Times New Roman',Georgia,serif; font-weight:400; }
+    .sans-caps { font-family:'Jost','DM Sans',sans-serif; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; font-weight:600; }
+    .subtle { color:var(--muted); }
+    .section { padding:105px 0; }
+    .section-heading { font-family:'Italiana', Georgia,serif; font-size:clamp(43px,5.2vw,72px); letter-spacing:-0.035em; line-height:1.06; margin:12px 0 18px; }
+    .center { text-align:center; }
+    .muted-label { color:var(--olive); }
+    .line { height:1px; background:var(--line); }
+    .cta { border:1px solid var(--olive); background:var(--olive); padding:15px 24px; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:white; display:inline-flex; align-items:center; justify-content:center; gap:12px; transition:transform .18s, background .18s; }
+    .cta:hover { transform:translateY(-2px); background:#4d6253; }
+    .cta.light { background:transparent; color:var(--olive); }
+    .cta.light:hover { background:#eff0ea; }
+    .cta.ink { background:var(--ink); border-color:var(--ink); }
+    .notice { color:#726b59; background:#edeadd; font-size:11px; text-align:center; letter-spacing:.075em; padding:8px 12px; border-bottom:1px solid #e2dcc8; }
+    .nav { position:sticky; top:0; z-index:20; background:rgba(247,245,239,.95); backdrop-filter:blur(13px); border-bottom:1px solid var(--line); }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; min-height:73px; gap:18px; }
+    .brand { display:flex; align-items:center; gap:12px; white-space:nowrap; }
+    .brand-icon { width:34px; height:34px; border-radius:50%; border:1px solid #b8b6a9; display:grid; place-items:center; font-family:Georgia,serif; font-size:16px; font-style:italic; }
+    .brand-text { font-size:12px; letter-spacing:.22em; font-weight:650; }
+    .nav-links { display:flex; align-items:center; gap:31px; font-family:'Jost',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.12em; }
+    .nav-links a:hover { color:var(--olive); }
+    .lang-toggle { border:1px solid var(--line); padding:9px 12px; font-size:10px; letter-spacing:.14em; min-width:70px; background:transparent; }
+    .nav-rsvp { border-bottom:1px solid var(--olive); padding:5px 0; }
+    .hero { min-height:650px; padding:53px 0 78px; position:relative; overflow:hidden; }
+    .hero-layout { display:grid; grid-template-columns:1fr .98fr; align-items:center; gap:66px; }
+    .hero-copy { padding:35px 0 25px; }
+    .hero-kicker { color:var(--olive); }
+    .hero-title { font-size:clamp(81px,8.35vw,129px); line-height:.86; letter-spacing:-.066em; margin:32px 0 22px; }
+    .hero-title span { display:block; }
+    .hero-title .ampersand { font-size:.63em; color:var(--rose); transform:translateX(69px); margin:5px 0 7px; }
+    .hero-caption { display:flex; align-items:center; gap:14px; font-size:12px; color:#6e756c; letter-spacing:.065em; }
+    .mini-rule { width:33px; height:1px; background:var(--olive); }
+    .hero-message { max-width:330px; font-size:15px; line-height:1.9; color:#788075; margin:26px 0 34px; }
+    .hero-figure { height:560px; display:flex; align-items:center; justify-content:center; position:relative; }
+    .hero-figure:before { content:''; position:absolute; z-index:0; inset:25px 11px 10px 30px; background:#e8e9df; border-radius:49% 49% 2px 2px / 38% 38% 2px 2px; }
+    .hero-art { position:relative; width:100%; height:100%; z-index:1; }
+    .art-frame { position:absolute; inset:43px 34px 0 58px; border:1px solid #d5d0c3; border-radius:49% 49% 0 0 / 37% 37% 0 0; pointer-events:none; }
+    /* CLIENT PHOTO SLOT: portrait picture appears above the floral artwork; artwork is fallback. */
+    .hero-photo { position:absolute; inset:43px 34px 6px 58px; width:calc(100% - 92px); height:calc(100% - 49px); object-fit:cover; object-position:center 35%; border-radius:49% 49% 1px 1px / 37% 37% 1px 1px; z-index:2; display:none; }
+    .hero-art.photo-active .hero-photo { display:block; }
+    .hero-art.photo-active svg { visibility:hidden; }
+    /* Optional gallery becomes visible only when at least one configured image loads. */
+    .photo-gallery { background:var(--white); border-bottom:1px solid var(--line); }
+    .photo-gallery[hidden] { display:none!important; }
+    .gallery-heading { text-align:center; max-width:690px; margin:0 auto 43px; }
+    .gallery-heading p { color:var(--muted); font-size:13px; line-height:1.85; margin:0; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+    .gallery-item { margin:0; }
+    .gallery-item img { display:block; width:100%; height:370px; object-fit:cover; background:#eeede7; }
+    .gallery-item figcaption { padding:13px 0 0; font-size:10px; color:var(--olive); letter-spacing:.13em; text-transform:uppercase; }
+    .gallery-item:nth-child(3n + 2) img { height:330px; margin-top:40px; }
+    .figure-label { position:absolute; bottom:24px; left:32px; z-index:3; padding:12px 18px; background:rgba(247,245,239,.9); border:1px solid #dcd9cc; font-size:10px; letter-spacing:.23em; text-transform:uppercase; }
+    .tiny-vertical { position:absolute; top:60px; right:-17px; transform:rotate(90deg); transform-origin:left top; font-size:10px; letter-spacing:.18em; color:var(--olive); text-transform:uppercase; }
+    .scroll-label { display:flex; align-items:center; gap:12px; margin-top:47px; font-size:10px; color:#8b8d81; letter-spacing:.25em; }
+    .vertical-stroke { width:1px; height:40px; background:#bbb8a9; }
+    .intro { background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:82px 0; }
+    .intro-inner { max-width:850px; text-align:center; margin:auto; }
+    .intro-ornament { display:flex; align-items:center; justify-content:center; gap:22px; color:#ad978b; font-size:22px; margin-bottom:20px; }
+    .intro-ornament span { width:67px; height:1px; background:#ddd7ce; }
+    .intro h2 { font-family:'Italiana',Georgia,serif; font-size:clamp(33px,4.5vw,58px); margin:10px 0 19px; letter-spacing:-.02em; }
+    .intro p { max-width:580px; margin:auto; font-size:15px; color:#777f75; line-height:1.95; }
+    .date-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; max-width:680px; margin:43px auto 0; }
+    .date-block { padding:0 20px; border-left:1px solid var(--line); }
+    .date-block:first-child { border:0; }
+    .date-block strong { display:block; font-family:'Italiana',Georgia,serif; font-size:39px; font-weight:400; margin-top:5px; }
+    .date-block small { text-transform:uppercase; color:var(--muted); font-size:10px; letter-spacing:.19em; }
+    .schedule-head { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:48px; }
+    .schedule-copy { max-width:375px; font-size:13px; line-height:1.9; color:var(--muted); }
+    .segmented { border:1px solid var(--line); display:inline-flex; padding:5px; gap:3px; flex-wrap:wrap; background:#f2f0e9; }
+    .segmented button { border:0; background:transparent; padding:10px 18px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#737b71; }
+    .segmented button[aria-pressed="true"] { background:var(--white); color:var(--ink); box-shadow:0 1px 7px #c4bcab2a; }
+    .agenda { display:grid; grid-template-columns:230px 1fr; gap:37px; }
+    .agenda-side { border-top:1px solid var(--line); padding-top:26px; }
+    .agenda-side .bigdate { font-family:'Italiana',Georgia,serif; font-size:94px; line-height:.9; color:#b59e88; }
+    .agenda-side .date-note { color:var(--muted); font-size:13px; line-height:1.8; max-width:190px; margin-top:15px; }
+    .agenda-list { border-top:1px solid var(--line); }
+    .agenda-row { display:grid; grid-template-columns:95px 1fr auto; gap:30px; border-bottom:1px solid var(--line); padding:22px 8px 21px 1px; align-items:start; }
+    .agenda-time { font-family:'Jost',sans-serif; font-size:13px; color:var(--olive); font-weight:600; letter-spacing:.04em; padding-top:8px; }
+    .agenda-item-title { font-family:'Italiana',Georgia,serif; font-size:29px; letter-spacing:-.01em; line-height:1.3; }
+    .agenda-item-note { font-size:12px; line-height:1.65; color:var(--muted); margin-top:3px; }
+    .agenda-tag { border:1px solid #d9d9cf; font-size:9px; letter-spacing:.09em; text-transform:uppercase; padding:7px 10px; color:#728073; white-space:nowrap; margin-top:6px; }
+    .agenda-hidden { display:none; }
+    .agenda-empty { color:var(--muted); padding:28px 0; }
+    .venue { background:#ebede6; }
+    .venue-inner { display:grid; grid-template-columns:.9fr 1.1fr; gap:65px; align-items:stretch; }
+    .venue-panel { padding:16px 0 16px; }
+    .venue-title { font-family:'Italiana',Georgia,serif; font-size:47px; line-height:1.15; margin:13px 0 20px; }
+    .venue-body { color:#68736a; line-height:1.85; font-size:14px; max-width:390px; }
+    .venue-info { display:flex; border-top:1px solid #d4d9d1; padding:17px 0; gap:22px; font-size:12px; }
+    .venue-info dt { min-width:82px; text-transform:uppercase; letter-spacing:.13em; font-weight:600; font-size:10px; color:#697669; }
+    .venue-info dd { margin:0; color:#5f675e; line-height:1.65; }
+    .map-art { background:#e0e5d9; position:relative; min-height:420px; overflow:hidden; border:9px solid #f7f8f3; }
+    .map-ornament { position:absolute; inset:0; opacity:.92; }
+    .map-label { position:absolute; left:26px; top:26px; background:#f7f8f2; border:1px solid #cfd5c9; padding:12px 18px; font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+    .map-pin { position:absolute; left:48%; top:43%; display:flex; flex-direction:column; align-items:center; gap:8px; transform:translate(-50%,-50%); }
+    .map-pin-circle { width:54px; height:54px; border-radius:50%; background:#697e6e; box-shadow:0 0 0 12px rgba(103,123,106,.16); border:5px solid #f4f7ee; display:grid; place-items:center; color:white; font-size:23px; }
+    .map-pin-label { background:#f8f8f3; border:1px solid #d7dcd3; padding:10px 15px; white-space:nowrap; font-size:11px; color:#617267; }
+    .rsvp-grid { display:grid; grid-template-columns:.85fr 1.15fr; gap:68px; align-items:start; }
+    .rsvp-aside { padding-top:29px; }
+    .rsvp-aside .section-heading { margin-bottom:23px; }
+    .rsvp-aside p { color:var(--muted); line-height:1.9; font-size:14px; max-width:350px; }
+    .rsvp-deadline { border-top:1px solid var(--line); padding-top:23px; margin-top:30px; }
+    .rsvp-card { background:var(--white); border:1px solid var(--line); padding:38px 39px 35px; box-shadow:0 14px 36px #403c2c09; }
+    .form-label { display:block; font-family:'Jost',sans-serif; font-weight:600; font-size:10px; text-transform:uppercase; letter-spacing:.13em; margin-bottom:9px; color:#59685d; }
+    .field { border:1px solid #dddcd3; background:#fbfaf7; width:100%; min-height:49px; padding:12px 13px; border-radius:0; font-size:13px; color:#323c33; }
+    .field::placeholder { color:#a2a59a; }
+    textarea.field { resize:vertical; min-height:95px; }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .field-group { margin-bottom:23px; }
+    .radio-options { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+    .radio-option { display:flex; align-items:center; gap:10px; border:1px solid #dddcd3; padding:13px; font-size:13px; background:#fbfaf7; cursor:pointer; }
+    .radio-option:has(input:checked) { background:#edf1eb; border-color:#758d7b; }
+    .radio-option input { accent-color:#657d6b; }
+    .rsvp-small { color:#9a8777; font-size:11px; line-height:1.65; margin:15px 0 0; }
+    .status { padding:14px 17px; margin-top:20px; border:1px solid #b5cbb8; background:#f0f7ee; color:#526c57; font-size:13px; line-height:1.7; }
+    .status[hidden], .hidden { display:none!important; }
+    .share { background:var(--white); border-top:1px solid var(--line); }
+    .share-inner { display:grid; grid-template-columns:1fr 300px; gap:70px; align-items:center; }
+    .share p { font-size:14px; line-height:1.9; color:var(--muted); max-width:510px; }
+    .share-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+    .qr-card { border:1px solid var(--line); padding:22px; text-align:center; background:#f8f7f2; }
+    #qrContainer { background:white; display:flex; align-items:center; justify-content:center; min-height:208px; width:100%; margin:0 auto 15px; padding:20px; overflow:hidden; }
+    #qrContainer img,#qrContainer canvas { max-width:100%; height:auto; }
+    .qr-placeholder { height:167px; width:167px; border:1px solid #deded6; display:grid; place-items:center; color:#8a998a; background:repeating-linear-gradient(45deg,#f2f4ee,#f2f4ee 9px,#fcfcfa 9px,#fcfcfa 18px); font-size:32px; }
+    .faq { max-width:800px; margin:auto; }
+    details { border-bottom:1px solid var(--line); padding:22px 0; }
+    details:first-of-type { border-top:1px solid var(--line); }
+    summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:20px; font-size:14px; font-weight:550; }
+    summary::-webkit-details-marker { display:none; }
+    summary:after { content:'+'; color:var(--olive); font-size:23px; font-weight:300; }
+    details[open] summary:after { content:'−'; }
+    details p { font-size:13px; line-height:1.8; color:var(--muted); margin-bottom:4px; }
+    footer { background:#424e43; color:#f1f0e9; text-align:center; padding:55px 22px 42px; }
+    .footer-title { font-family:'Italiana',Georgia,serif; font-size:42px; margin:8px 0 13px; }
+    .footer-note { font-size:11px; letter-spacing:.16em; color:#d0d9ce; text-transform:uppercase; }
+    .footer-bottom { opacity:.58; margin-top:32px; font-size:10px; letter-spacing:.1em; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:1000px) {
+      .hero-layout { gap:30px; }
+      .hero-title { font-size:clamp(73px,10vw,105px); }
+      .hero-figure { height:500px; }
+      .agenda { grid-template-columns:180px 1fr; }
+      .venue-inner,.rsvp-grid { gap:38px; }
+      .nav-links { gap:17px; }
+    }
+    @media (max-width:720px) {
+      .page-width { width:min(100% - 36px,540px); }
+      .section { padding:70px 0; }
+      .nav-inner { min-height:64px; }
+      .brand-text { font-size:11px; }
+      .nav-links { display:none; }
+      .hero { min-height:auto; padding:28px 0 48px; }
+      .hero-layout { display:flex; flex-direction:column; gap:4px; }
+      .hero-copy { width:100%; text-align:center; padding:16px 0 0; }
+      .hero-kicker { font-size:10px; }
+      .hero-title { font-size:clamp(72px,20vw,112px); margin:24px 0 18px; }
+      .hero-title .ampersand { transform:none; }
+      .hero-caption { justify-content:center; }
+      .hero-message { margin:17px auto 24px; font-size:13px; }
+      .hero-figure { width:100%; height:390px; max-width:430px; margin-top:10px; }
+      .hero-figure:before { inset:15px 24px 4px 25px; }
+      .hero-photo { inset:28px 44px 6px 53px; width:calc(100% - 97px); height:calc(100% - 34px); }
+      .gallery-grid { grid-template-columns:1fr 1fr; gap:12px; }
+      .gallery-item img,.gallery-item:nth-child(3n + 2) img { height:230px; margin-top:0; }
+      .gallery-item figcaption { font-size:9px; letter-spacing:.07em; }
+      .art-frame { inset:28px 44px 0 53px; }
+      .tiny-vertical { right:6px; }
+      .figure-label { bottom:17px; left:4px; }
+      .scroll-label { justify-content:center; margin-top:27px; }
+      .intro { padding:65px 0; }
+      .intro h2 { font-size:clamp(36px,10vw,54px); }
+      .intro p { font-size:13px; }
+      .date-grid { margin-top:30px; }
+      .date-block { padding:0 8px; }
+      .date-block strong { font-size:31px; }
+      .date-block small { font-size:8px; }
+      .schedule-head { display:block; margin-bottom:22px; }
+      .schedule-copy { margin-bottom:22px; }
+      .segmented { width:100%; justify-content:center; }
+      .segmented button { padding:10px 12px; font-size:9px; }
+      .agenda { display:block; }
+      .agenda-side { display:none; }
+      .agenda-row { grid-template-columns:66px 1fr; gap:16px; padding:21px 0; }
+      .agenda-item-title { font-size:25px; }
+      .agenda-tag { display:none; }
+      .agenda-time { font-size:12px; }
+      .venue-inner,.rsvp-grid,.share-inner { display:flex; flex-direction:column; gap:27px; }
+      .venue-title { font-size:43px; }
+      .map-art { min-height:325px; width:100%; }
+      .rsvp-aside { padding-top:0; }
+      .rsvp-card { padding:27px 21px; width:100%; }
+      .field-row { grid-template-columns:1fr; gap:0; }
+      .share-inner { align-items:stretch; }
+      .qr-card { width:100%; max-width:300px; margin:0 auto; }
+      .share-actions .cta { flex:1; }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*:before,*:after { scroll-behavior:auto!important; transition:none!important; } }
+  </style>
+</head>
+<body>
+  <div class="notice" data-en="TEMPLATE PREVIEW · All names, times and venue details are examples" data-th="ตัวอย่างเว็บไซต์ · ชื่อ เวลา และสถานที่เป็นข้อมูลสมมติ">TEMPLATE PREVIEW · All names, times and venue details are examples</div>
+  <header class="nav">
+    <div class="page-width nav-inner flex items-center justify-between gap-4">
+      <a href="#home" class="brand inline-flex items-center gap-3" aria-label="Back to top"><span class="brand-icon">m<span style="color:var(--rose)">·</span>k</span><span class="brand-text">THE WEDDING DAY</span></a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#story" data-en="Our story" data-th="คำเชิญ">Our story</a>
+        <a href="#agenda" data-en="The itinerary" data-th="กำหนดการ">The itinerary</a>
+        <a href="#venue" data-en="The venue" data-th="สถานที่">The venue</a>
+        <a href="#rsvp" class="nav-rsvp" data-en="RSVP" data-th="ตอบรับ">RSVP</a>
+      </nav>
+      <button type="button" class="lang-toggle" id="languageButton" aria-label="Switch language to Thai">EN / TH</button>
+    </div>
+  </header>
+  <main>
+    <section id="home" class="hero">
+      <div class="page-width hero-layout">
+        <div class="hero-copy">
+          <div class="sans-caps hero-kicker" data-en="Together, in every season" data-th="ร่วมสร้างความทรงจำไปด้วยกัน">Together, in every season</div>
+          <h1 class="serif hero-title"><span id="firstName">Mira</span><span class="ampersand">&amp;</span><span id="secondName">Ken</span></h1>
+          <div class="hero-caption flex items-center gap-3"><span class="mini-rule"></span><span id="heroDate">Sunday, 14 February 2027 · Bangkok</span><span class="mini-rule"></span></div>
+          <p class="hero-message" data-en="With full hearts and open arms, we invite you to celebrate the beginning of our forever." data-th="ด้วยความรักและความยินดี เราขอเชิญทุกท่านมาร่วมเป็นส่วนหนึ่งของวันสำคัญของเรา">With full hearts and open arms, we invite you to celebrate the beginning of our forever.</p>
+          <a href="#agenda" class="cta" data-en="Discover the day  →" data-th="ดูรายละเอียดงาน  →">Discover the day →</a>
+        </div>
+        <div class="hero-figure" aria-label="Minimal floral artwork for the wedding invitation">
+          <div class="hero-art">
+            <div class="art-frame"></div>
+            <svg viewBox="0 0 500 560" role="img" aria-label="Delicate botanical line drawing" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+              <defs>
+                <linearGradient id="stem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#829383"/><stop offset="1" stop-color="#b7ad94"/></linearGradient>
+                <radialGradient id="petal"><stop offset="0" stop-color="#fffdfa"/><stop offset="1" stop-color="#e2d6cf"/></radialGradient>
+              </defs>
+              <g fill="none" stroke="url(#stem)" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M190 523 C230 422 203 335 260 208" stroke-width="2"/>
+                <path d="M260 208 C288 146 292 111 260 65" stroke-width="1.6"/>
+                <path d="M219 418 C172 402 128 371 107 308" stroke-width="1.6"/>
+                <path d="M238 320 C288 331 334 302 351 266" stroke-width="1.7"/>
+                <path d="M209 459 C243 445 283 427 305 386" stroke-width="1.5"/>
+                <path d="M212 441 C151 441 114 478 93 510" stroke-width="1.6"/>
+                <path d="M250 261 C202 229 180 195 173 141" stroke-width="1.4"/>
+                <path d="M273 178 C321 199 349 187 366 163" stroke-width="1.5"/>
+                <path d="M206 403 C159 402 141 370 121 344 Q164 341 206 403Z" fill="#aab6a0" fill-opacity=".58" stroke-width=".9"/>
+                <path d="M230 340 C225 304 233 275 252 252 Q276 306 230 340Z" fill="#91a48f" fill-opacity=".48" stroke-width=".9"/>
+                <path d="M256 263 Q279 225 318 230 Q313 263 256 263Z" fill="#91a48f" fill-opacity=".5" stroke-width=".9"/>
+                <path d="M227 455 Q276 437 292 402 Q253 394 227 455Z" fill="#9aaf96" fill-opacity=".5" stroke-width=".9"/>
+                <path d="M172 454 Q134 429 103 431 Q117 468 172 454Z" fill="#b5bfa6" fill-opacity=".5" stroke-width=".9"/>
+                <path d="M270 185 Q303 151 319 121 Q284 123 270 185Z" fill="#92a88f" fill-opacity=".46" stroke-width=".9"/>
+                <path d="M245 205 Q198 200 174 177 Q197 156 245 205Z" fill="#b2b9a7" fill-opacity=".55" stroke-width=".8"/>
+                <path d="M321 312 Q356 295 366 273 Q334 273 321 312Z" fill="#a8b7a0" fill-opacity=".47" stroke-width=".8"/>
+              </g>
+              <g transform="translate(256 65)" fill="url(#petal)" stroke="#c0b3a7" stroke-width="1.15">
+                <ellipse cy="-35" rx="23" ry="39"/><ellipse cy="-35" rx="23" ry="39" transform="rotate(60)"/><ellipse cy="-35" rx="23" ry="39" transform="rotate(120)"/><ellipse cy="-35" rx="23" ry="39" transform="rotate(180)"/><ellipse cy="-35" rx="23" ry="39" transform="rotate(240)"/><ellipse cy="-35" rx="23" ry="39" transform="rotate(300)"/>
+                <circle r="13" fill="#caa98a" stroke="#bca089"/><circle r="4" fill="#9a7b60" stroke="none"/>
+              </g>
+              <g transform="translate(171 135) scale(.77) rotate(-24)" fill="#f1e9e0" stroke="#bcaea1" stroke-width="1.2">
+                <ellipse cy="-28" rx="20" ry="34"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(72)"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(144)"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(216)"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(288)"/><circle r="12" fill="#ccab8d"/>
+              </g>
+              <g transform="translate(360 159) scale(.60) rotate(5)" fill="#f6eee6" stroke="#bea99e" stroke-width="1.3">
+                <ellipse cy="-28" rx="20" ry="34"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(72)"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(144)"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(216)"/><ellipse cy="-28" rx="20" ry="34" transform="rotate(288)"/><circle r="12" fill="#c3a48d"/>
+              </g>
+              <g transform="translate(107 307) scale(.65) rotate(-35)" fill="#eee8dd" stroke="#bcae9f" stroke-width="1.3">
+                <ellipse cy="-30" rx="21" ry="33"/><ellipse cy="-30" rx="21" ry="33" transform="rotate(72)"/><ellipse cy="-30" rx="21" ry="33" transform="rotate(144)"/><ellipse cy="-30" rx="21" ry="33" transform="rotate(216)"/><ellipse cy="-30" rx="21" ry="33" transform="rotate(288)"/><circle r="12" fill="#c9ac90"/>
+              </g>
+              <g transform="translate(350 263) scale(.8) rotate(16)" fill="#f5e9e3" stroke="#beafa4" stroke-width="1.2">
+                <ellipse cy="-30" rx="22" ry="34"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(72)"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(144)"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(216)"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(288)"/><circle r="12" fill="#b9977f"/>
+              </g>
+              <g transform="translate(305 384) scale(.60) rotate(-12)" fill="#f5ede4" stroke="#bda899" stroke-width="1.1">
+                <ellipse cy="-30" rx="22" ry="34"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(72)"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(144)"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(216)"/><ellipse cy="-30" rx="22" ry="34" transform="rotate(288)"/><circle r="12" fill="#c5a188"/>
+              </g>
+              <g opacity=".45" fill="#b3a38a"><circle cx="392" cy="393" r="2.5"/><circle cx="402" cy="409" r="1.5"/><circle cx="382" cy="421" r="1.5"/><circle cx="105" cy="169" r="2"/></g>
+            </svg>
+            <!-- PHOTO: file path configured in CONFIG.photos.hero. Floral drawing stays as fallback. -->
+            <img id="heroPhoto" class="hero-photo" alt="Wedding couple portrait" decoding="async" fetchpriority="high">
+            <div class="figure-label" data-en="A CELEBRATION OF LOVE" data-th="วันแห่งความรัก">A CELEBRATION OF LOVE</div>
+            <div class="tiny-vertical" id="verticalDate">Sunday · 14 February · 2027</div>
+          </div>
+        </div>
+      </div>
+      <div class="page-width scroll-label"><span class="vertical-stroke"></span><span data-en="SCROLL TO EXPLORE" data-th="เลื่อนลงเพื่อดูรายละเอียด">SCROLL TO EXPLORE</span></div>
+    </section>
+    <section class="intro" id="story">
+      <div class="page-width intro-inner mx-auto text-center">
+        <div class="intro-ornament"><span></span>✳<span></span></div>
+        <div class="sans-caps muted-label" data-en="THE INVITATION" data-th="คำเชิญ">THE INVITATION</div>
+        <h2 data-en="The beginning of our next chapter" data-th="จุดเริ่มต้นของเรื่องราวบทใหม่">The beginning of our next chapter</h2>
+        <p data-en="Some moments are even more beautiful when shared. Your presence would mean the world to us as we gather with family and friends to celebrate our marriage." data-th="ทุกช่วงเวลามีความหมายยิ่งขึ้นเมื่อได้แบ่งปัน เรารู้สึกยินดีอย่างยิ่งหากคุณจะมาร่วมเป็นส่วนหนึ่งในวันสำคัญนี้กับครอบครัวและเพื่อนของเรา">Some moments are even more beautiful when shared. Your presence would mean the world to us as we gather with family and friends to celebrate our marriage.</p>
+        <div class="date-grid grid grid-cols-3">
+          <div class="date-block"><small data-en="MONTH" data-th="เดือน">MONTH</small><strong id="dateMonth" data-en="Feb" data-th="ก.พ.">Feb</strong></div>
+          <div class="date-block"><small data-en="DAY" data-th="วันที่">DAY</small><strong id="dateDay">14</strong></div>
+          <div class="date-block"><small data-en="YEAR" data-th="ปี">YEAR</small><strong id="dateYear">2027</strong></div>
+        </div>
+      </div>
+    </section>
+    <!-- OPTIONAL PHOTO GALLERY: automatically hidden until your photos load successfully. -->
+    <section class="section photo-gallery" id="gallery" hidden>
+      <div class="page-width">
+        <div class="gallery-heading">
+          <div class="sans-caps muted-label" data-en="MOMENTS TO TREASURE" data-th="ภาพความทรงจำ">MOMENTS TO TREASURE</div>
+          <h2 class="section-heading" data-en="Our moments" data-th="เรื่องราวของเรา">Our moments</h2>
+          <p data-en="Little moments, beautiful memories." data-th="ช่วงเวลาเล็ก ๆ ที่กลายเป็นความทรงจำแสนพิเศษ">Little moments, beautiful memories.</p>
+        </div>
+        <div id="galleryGrid" class="gallery-grid" aria-label="Wedding photo gallery"></div>
+      </div>
+    </section>
+    <section class="section" id="agenda">
+      <div class="page-width">
+        <div class="schedule-head">
+          <div>
+            <div class="sans-caps muted-label" data-en="THE ORDER OF EVENTS" data-th="ลำดับพิธีการ">THE ORDER OF EVENTS</div>
+            <h2 class="section-heading" data-en="The wedding day" data-th="กำหนดการงานแต่ง">The wedding day</h2>
+            <p class="schedule-copy" data-en="An overview of everything we have planned. Select a session to see what is happening and when." data-th="รายละเอียดพิธีและกิจกรรมต่าง ๆ สามารถเลือกดูตามช่วงเวลาได้">An overview of everything we have planned. Select a session to see what is happening and when.</p>
+          </div>
+          <div class="segmented" role="group" aria-label="Filter agenda by session">
+            <button type="button" data-filter="all" aria-pressed="true" data-en="ALL EVENTS" data-th="ทั้งหมด">ALL EVENTS</button>
+            <button type="button" data-filter="ceremony" aria-pressed="false" data-en="CEREMONY" data-th="พิธีเช้า">CEREMONY</button>
+            <button type="button" data-filter="reception" aria-pressed="false" data-en="RECEPTION" data-th="งานเลี้ยง">RECEPTION</button>
+          </div>
+        </div>
+        <div class="agenda">
+          <div class="agenda-side">
+            <div class="sans-caps muted-label" id="sideDay">SUNDAY</div>
+            <div class="bigdate" id="sideDate">14</div>
+            <div class="sans-caps muted-label" id="sideMonthYear">FEBRUARY 2027</div>
+            <p class="date-note" data-en="We look forward to sharing each moment of this special day with you." data-th="ขอบคุณที่มาร่วมแบ่งปันทุกช่วงเวลาสำคัญกับเรา">We look forward to sharing each moment of this special day with you.</p>
+          </div>
+          <div class="agenda-list" id="agendaList" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+    <section class="section venue" id="venue">
+      <div class="page-width venue-inner">
+        <div class="venue-panel">
+          <div class="sans-caps muted-label" data-en="FIND YOUR WAY" data-th="รายละเอียดสถานที่">FIND YOUR WAY</div>
+          <h2 class="section-heading" data-en="Where we gather" data-th="สถานที่จัดงาน">Where we gather</h2>
+          <div class="venue-title" id="venueTitle">The Glasshouse<br>at Nai Lert Park</div>
+          <p id="venueDescription" class="venue-body" data-en="An intimate celebration surrounded by greenery in the heart of Bangkok. This is a sample venue; replace it before publishing." data-th="สถานที่ตัวอย่างท่ามกลางบรรยากาศร่มรื่นใจกลางกรุงเทพฯ กรุณาเปลี่ยนเป็นสถานที่จริงก่อนเผยแพร่">An intimate celebration surrounded by greenery in the heart of Bangkok. This is a sample venue; replace it before publishing.</p>
+          <dl>
+            <div class="venue-info"><dt data-en="ADDRESS" data-th="ที่อยู่">ADDRESS</dt><dd id="venueAddress">Nai Lert Park, Bangkok, Thailand (sample venue)</dd></div>
+            <div class="venue-info"><dt data-en="DRESS CODE" data-th="การแต่งกาย">DRESS CODE</dt><dd id="dressCode" data-en="Garden formal · Earth tones & soft neutrals" data-th="ชุดสุภาพโทนเอิร์ธโทนและสีธรรมชาติ">Garden formal · Earth tones & soft neutrals</dd></div>
+            <div class="venue-info"><dt data-en="ARRIVAL" data-th="เวลาแนะนำ">ARRIVAL</dt><dd id="arrivalNote" data-en="Please arrive 20–30 minutes before your session." data-th="กรุณามาถึงก่อนเริ่มพิธีประมาณ 20–30 นาที">Please arrive 20–30 minutes before your session.</dd></div>
+          </dl>
+          <a id="directionsLink" href="https://www.google.com/maps/search/?api=1&query=Nai%20Lert%20Park%20Bangkok" target="_blank" rel="noopener noreferrer" class="cta" style="margin-top:21px" data-en="OPEN GOOGLE MAPS  ↗" data-th="เปิดแผนที่ Google Maps  ↗">OPEN GOOGLE MAPS ↗</a>
+        </div>
+        <div class="map-art" aria-label="Stylized decorative map illustration, not a navigation map">
+          <svg viewBox="0 0 600 480" preserveAspectRatio="xMidYMid slice" class="map-ornament" aria-hidden="true">
+            <rect width="600" height="480" fill="#dfe5da"/>
+            <path d="M-70 80 L665 307 M-70 330 L665 66 M54 -40 L326 523 M400 -40 L660 490" fill="none" stroke="#f9f9f3" stroke-width="33"/>
+            <path d="M-70 80 L665 307 M-70 330 L665 66 M54 -40 L326 523 M400 -40 L660 490" fill="none" stroke="#cdd7cb" stroke-width="1"/>
+            <path d="M29 60 C103 65 109 109 139 154 C172 200 132 250 93 272 C63 289 24 287 -20 260V-20L29 0Z" fill="#b8c9b7"/>
+            <path d="M479 322 C514 286 566 300 625 273 L620 510 L425 509Z" fill="#b4c9b7"/>
+            <path d="M311 85 L378 70 L415 126 L347 144 Z" fill="#b5c9b5"/><path d="M355 364 L427 350 L451 409 L399 432Z" fill="#b5c9b5"/>
+            <path d="M-20 423 Q103 326 210 408 T477 430 T620 405" stroke="#a7c3c6" stroke-width="29" fill="none"/><path d="M-20 423 Q103 326 210 408 T477 430 T620 405" stroke="#dcefee" stroke-width="4" fill="none"/>
+            <g stroke="#cad4c5" stroke-width="1"><path d="M245 25L263 178M476 12L499 213M53 189L96 327M223 297L245 475"/></g>
+          </svg>
+          <div class="map-label" data-en="BANGKOK, THAILAND" data-th="กรุงเทพมหานคร">BANGKOK, THAILAND</div>
+          <div class="map-pin"><div class="map-pin-circle">⌖</div><div class="map-pin-label" data-en="Sample venue location" data-th="สถานที่ตัวอย่าง">Sample venue location</div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="rsvp">
+      <div class="page-width rsvp-grid">
+        <div class="rsvp-aside">
+          <div class="sans-caps muted-label" data-en="SAVE YOUR SEAT" data-th="แจ้งยืนยันการเข้าร่วม">SAVE YOUR SEAT</div>
+          <h2 class="section-heading" data-en="Kindly RSVP" data-th="ตอบรับคำเชิญ">Kindly RSVP</h2>
+          <p data-en="We would love to celebrate with you. Please let us know whether you can join us, and tell us a little about your preferences." data-th="เราหวังเป็นอย่างยิ่งว่าจะได้พบคุณ กรุณาแจ้งว่าจะมาร่วมงานหรือไม่ พร้อมข้อมูลที่จำเป็น">We would love to celebrate with you. Please let us know whether you can join us, and tell us a little about your preferences.</p>
+          <div class="rsvp-deadline"><div class="sans-caps muted-label" data-en="PLEASE REPLY BY" data-th="กรุณาตอบกลับภายใน">PLEASE REPLY BY</div><div class="serif" style="font-size:32px;margin-top:10px" id="deadlineLabel">January 25, 2027</div></div>
+        </div>
+        <div class="rsvp-card">
+          <div class="sans-caps muted-label" style="margin-bottom:27px" data-en="YOUR RESPONSE" data-th="ข้อมูลผู้ร่วมงาน">YOUR RESPONSE</div>
+          <form id="rsvpForm" novalidate>
+            <div class="field-row grid grid-cols-1 md:grid-cols-2">
+              <div class="field-group"><label class="form-label" for="guestName" data-en="FULL NAME *" data-th="ชื่อและนามสกุล *">FULL NAME *</label><input class="field" id="guestName" name="guestName" autocomplete="name" maxlength="100" required placeholder="Your name"></div>
+              <div class="field-group"><label class="form-label" for="guestEmail" data-en="EMAIL (OPTIONAL)" data-th="อีเมล (ไม่บังคับ)">EMAIL (OPTIONAL)</label><input class="field" type="email" id="guestEmail" name="guestEmail" autocomplete="email" maxlength="180" placeholder="you@example.com"></div>
+            </div>
+            <div class="field-group"><div class="form-label" id="attendanceLabel" data-en="WILL YOU ATTEND? *" data-th="คุณจะมาร่วมงานหรือไม่? *">WILL YOU ATTEND? *</div>
+              <div class="radio-options grid grid-cols-2 gap-3" role="radiogroup" aria-labelledby="attendanceLabel">
+                <label class="radio-option"><input type="radio" name="attendance" value="yes" required><span data-en="Joyfully accepts" data-th="ยินดีเข้าร่วม">Joyfully accepts</span></label>
+                <label class="radio-option"><input type="radio" name="attendance" value="no"><span data-en="Regretfully declines" data-th="ไม่สะดวกเข้าร่วม">Regretfully declines</span></label>
+              </div>
+            </div>
+            <div id="attendingFields" hidden>
+              <div class="field-row grid grid-cols-1 md:grid-cols-2">
+                <div class="field-group"><label class="form-label" for="guestCount" data-en="TOTAL GUESTS" data-th="จำนวนผู้เข้าร่วมทั้งหมด">TOTAL GUESTS</label><select class="field" id="guestCount" name="guestCount"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="field-group"><label class="form-label" for="guestSession" data-en="YOUR SESSION" data-th="ช่วงเวลาที่ร่วมงาน">YOUR SESSION</label><select class="field" id="guestSession" name="guestSession"><option value="both" data-en="Both sessions" data-th="ทั้งสองช่วง">Both sessions</option><option value="ceremony" data-en="Ceremony only" data-th="เฉพาะพิธีเช้า">Ceremony only</option><option value="reception" data-en="Reception only" data-th="เฉพาะงานเลี้ยง">Reception only</option></select></div>
+              </div>
+              <div class="field-group"><label class="form-label" for="dietary" data-en="DIETARY REQUESTS (OPTIONAL)" data-th="ข้อจำกัดด้านอาหาร (ไม่บังคับ)">DIETARY REQUESTS (OPTIONAL)</label><input class="field" id="dietary" name="dietary" maxlength="180" placeholder="Vegetarian, food allergy, etc."></div>
+            </div>
+            <div class="field-group"><label class="form-label" for="message" data-en="MESSAGE (OPTIONAL)" data-th="ฝากข้อความถึงคู่บ่าวสาว (ไม่บังคับ)">MESSAGE (OPTIONAL)</label><textarea class="field" id="message" name="message" maxlength="500" placeholder="A little note for the couple..."></textarea></div>
+            <button class="cta" style="width:100%" type="submit" data-en="SUBMIT MY RESPONSE  →" data-th="ส่งคำตอบ  →">SUBMIT MY RESPONSE →</button>
+            <p class="rsvp-small" data-en="PROTOTYPE ONLY: this response stays in your browser. It is not transmitted, collected centrally, or sent to the couple." data-th="เวอร์ชันทดลอง: คำตอบถูกจัดเก็บเฉพาะในเบราว์เซอร์นี้ ไม่ได้ส่งถึงคู่บ่าวสาวหรือฐานข้อมูลกลาง">PROTOTYPE ONLY: this response stays in your browser. It is not transmitted, collected centrally, or sent to the couple.</p>
+            <div id="rsvpStatus" class="status" role="status" aria-live="polite" hidden></div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="section share" id="share">
+      <div class="page-width share-inner">
+        <div>
+          <div class="sans-caps muted-label" data-en="EVERYTHING IN ONE PLACE" data-th="ข้อมูลครบในที่เดียว">EVERYTHING IN ONE PLACE</div>
+          <h2 class="section-heading" data-en="Take the day with you" data-th="เก็บกำหนดการไว้กับคุณ">Take the day with you</h2>
+          <p data-en="Save the celebration to your calendar, or share this page with your loved ones. A live QR code will appear once the website is published at a public URL." data-th="บันทึกวันสำคัญลงปฏิทินหรือแชร์เว็บไซต์ให้คนใกล้ชิด โดย QR Code สำหรับแชร์จะปรากฏเมื่อเผยแพร่เว็บไซต์ออนไลน์แล้ว">Save the celebration to your calendar, or share this page with your loved ones. A live QR code will appear once the website is published at a public URL.</p>
+          <div class="share-actions flex flex-wrap gap-3"><button id="calendarButton" type="button" class="cta" data-en="ADD TO CALENDAR  ↗" data-th="เพิ่มลงปฏิทิน  ↗">ADD TO CALENDAR ↗</button><button id="shareButton" type="button" class="cta light inline-flex items-center justify-center" data-en="COPY EVENT LINK  ↗" data-th="คัดลอกลิงก์งาน  ↗">COPY EVENT LINK ↗</button></div>
+          <p id="shareStatus" role="status" aria-live="polite" style="font-size:12px;margin-top:12px"></p>
+        </div>
+        <div class="qr-card">
+          <div class="sans-caps muted-label" style="margin-bottom:14px" data-en="SCAN & SAVE" data-th="สแกนเพื่อดูข้อมูล">SCAN & SAVE</div>
+          <div id="qrContainer"><div class="qr-placeholder" aria-hidden="true">◇</div></div>
+          <div id="qrCaption" style="font-size:11px;color:var(--muted);line-height:1.7" data-en="QR code activates after public deployment" data-th="QR Code จะใช้งานได้เมื่อเผยแพร่เว็บไซต์">QR code activates after public deployment</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="faq">
+      <div class="page-width faq">
+        <div class="center" style="margin-bottom:43px"><div class="sans-caps muted-label" data-en="GOOD TO KNOW" data-th="ข้อมูลเพิ่มเติม">GOOD TO KNOW</div><h2 class="section-heading" data-en="A little more information" data-th="คำถามที่พบบ่อย">A little more information</h2></div>
+        <details><summary data-en="When should I arrive?" data-th="ควรมาถึงกี่โมง?">When should I arrive?</summary><p data-en="Please plan to arrive 20–30 minutes before your ceremony or reception session." data-th="กรุณามาถึงก่อนเวลาพิธีหรือช่วงงานเลี้ยงประมาณ 20–30 นาที">Please plan to arrive 20–30 minutes before your ceremony or reception session.</p></details>
+        <details><summary data-en="What should I wear?" data-th="ควรแต่งกายอย่างไร?">What should I wear?</summary><p data-en="Garden formal attire in earthy and neutral tones is suggested. Please dress comfortably for an indoor–outdoor venue." data-th="แนะนำชุดสุภาพโทนเอิร์ธโทนหรือโทนสีกลาง และรองเท้าที่เหมาะกับพื้นที่ทั้งในร่มและกลางแจ้ง">Garden formal attire in earthy and neutral tones is suggested. Please dress comfortably for an indoor–outdoor venue.</p></details>
+        <details><summary data-en="Can I bring a guest?" data-th="สามารถพาผู้ติดตามมาได้หรือไม่?">Can I bring a guest?</summary><p data-en="This demonstration allows up to four attendees per response. In production, guest allowances must be configured by the couple or wedding planner." data-th="ตัวอย่างนี้รองรับผู้เข้าร่วมสูงสุด 4 คนต่อหนึ่งคำตอบ ในระบบจริงจำนวนผู้ติดตามจะกำหนดโดยคู่บ่าวสาวหรือผู้จัดงาน">This demonstration allows up to four attendees per response. In production, guest allowances must be configured by the couple or wedding planner.</p></details>
+      </div>
+    </section>
+  </main>
+  <footer><div class="footer-note" data-en="WITH LOVE, ALWAYS" data-th="ด้วยความรักเสมอ">WITH LOVE, ALWAYS</div><div class="footer-title" id="footerCouple">Mira & Ken</div><div class="footer-note" data-en="WE CAN'T WAIT TO SEE YOU" data-th="หวังว่าจะได้พบกันในวันสำคัญ">WE CAN'T WAIT TO SEE YOU</div><div class="footer-bottom">WEDDING WEBSITE TEMPLATE · DEMONSTRATION ONLY</div></footer>
+
+  <script>
+  'use strict';
+  // EDIT THESE VALUES FOR EACH CLIENT. All details below are sample content.
+  const CONFIG = {
+    couple: { first: 'Mira', second: 'Ken' },
+    // HOW TO ADD PICTURES:
+    // 1. Put your own JPG/PNG/WebP files in the assets/ folder.
+    // 2. Rename them to the file names below (or change these paths).
+    // 3. Reopen index.html. Missing pictures will simply be hidden.
+    photos: {
+      hero: 'assets/couple.jpg', // Main invitation portrait (recommended portrait ratio 4:5)
+      heroPosition: 'center 35%', // Change to 'center 20%' to reveal more of faces near the top
+      gallery: [
+        { src: 'assets/photo-1.jpg', en: 'Together', th: 'ช่วงเวลาของเรา' },
+        { src: 'assets/photo-2.jpg', en: 'The little things', th: 'เรื่องราวเล็ก ๆ' },
+        { src: 'assets/photo-3.jpg', en: 'Forever starts here', th: 'จุดเริ่มต้นของเรา' }
+      ]
+    },
+    weddingDate: '2027-02-14',
+    rsvpDeadline: '2027-01-25',
+    timezone: 'Asia/Bangkok',
+    city: 'Bangkok',
+    venue: 'The Glasshouse at Nai Lert Park',
+    venueAddress: 'Nai Lert Park, Bangkok, Thailand (sample venue)',
+    venueDescriptionEn: 'An intimate celebration surrounded by greenery in the heart of Bangkok. This is a sample venue; replace it before publishing.',
+    venueDescriptionTh: 'สถานที่ตัวอย่างท่ามกลางบรรยากาศร่มรื่นใจกลางกรุงเทพฯ กรุณาเปลี่ยนเป็นสถานที่จริงก่อนเผยแพร่',
+    dressCodeEn: 'Garden formal · Earth tones & soft neutrals',
+    dressCodeTh: 'ชุดสุภาพโทนเอิร์ธโทนและสีธรรมชาติ',
+    arrivalEn: 'Please arrive 20–30 minutes before your session.',
+    arrivalTh: 'กรุณามาถึงก่อนเริ่มพิธีประมาณ 20–30 นาที',
+    mapQuery: 'Nai Lert Park Bangkok Thailand',
+    sessions: [
+      { time:'09:00', group:'ceremony', en:'Guest arrival & refreshments', th:'ต้อนรับแขกและเครื่องดื่ม', noteEn:'Welcome drinks and registration', noteTh:'ลงทะเบียนและรับเครื่องดื่มต้อนรับ' },
+      { time:'09:30', group:'ceremony', en:'Khan Maak procession', th:'ขบวนขันหมาก', noteEn:'Traditional Thai wedding procession', noteTh:'พิธีแห่ขันหมากตามประเพณีไทย' },
+      { time:'10:15', group:'ceremony', en:'Engagement ceremony', th:'พิธีหมั้น', noteEn:'Blessings and the exchange of rings', noteTh:'พิธีรับพรและสวมแหวน' },
+      { time:'11:00', group:'ceremony', en:'Water-pouring ceremony', th:'พิธีหลั่งน้ำพระพุทธมนต์', noteEn:'Family blessings for the couple', noteTh:'รับพรจากครอบครัวและแขกผู้ใหญ่' },
+      { time:'12:00', group:'ceremony', en:'Lunch', th:'รับประทานอาหารกลางวัน', noteEn:'Lunch for morning ceremony guests', noteTh:'ร่วมรับประทานอาหารกลางวัน' },
+      { time:'17:30', group:'reception', en:'Cocktail reception', th:'งานค็อกเทลต้อนรับ', noteEn:'Drinks, conversation and photographs', noteTh:'รับเครื่องดื่ม พูดคุย และถ่ายภาพ' },
+      { time:'18:30', group:'reception', en:'Wedding dinner', th:'งานเลี้ยงฉลองมงคลสมรส', noteEn:'Dinner and a warm welcome', noteTh:'ร่วมรับประทานอาหารค่ำ' },
+      { time:'19:45', group:'reception', en:'Toasts & speeches', th:'กล่าวคำอวยพร', noteEn:'Words from our favourite people', noteTh:'ร่วมรับฟังคำอวยพรจากคนสำคัญ' },
+      { time:'20:15', group:'reception', en:'First dance', th:'การเต้นรำครั้งแรก', noteEn:'Our first dance as a married couple', noteTh:'การเต้นรำครั้งแรกของคู่บ่าวสาว' },
+      { time:'21:00', group:'reception', en:'After-party', th:'งานเลี้ยงสังสรรค์', noteEn:'Music, laughter and celebration', noteTh:'ดนตรีและช่วงเวลาแห่งความสุข' }
+    ]
+  };
+
+  const translations = {
+    en: { local:'Demo mode: event link requires public hosting.', copied:'Event URL copied to clipboard.', copyFailed:'Unable to copy automatically. Please use your browser’s address bar.', attendError:'Please select whether you can attend.', nameError:'Please enter your full name.', emailError:'Please enter a valid email address or leave it blank.', successYes:'Your sample RSVP is saved on this device only. It has NOT been sent to the couple.', successNo:'Your sample response is saved on this device only. It has NOT been sent to the couple.', calendar:'wedding-invitation.ics', code:'The QR code library could not load. You can still copy the link.', qrText:'Scan for wedding details', venueNote:'Sample venue only', ceremony:'Ceremony', reception:'Reception' },
+    th: { local:'โหมดตัวอย่าง: ต้องเผยแพร่เว็บไซต์ออนไลน์ก่อนจึงจะแชร์ลิงก์ได้', copied:'คัดลอกลิงก์เว็บไซต์แล้ว', copyFailed:'ไม่สามารถคัดลอกอัตโนมัติได้ กรุณาคัดลอกจากแถบที่อยู่ของเบราว์เซอร์', attendError:'กรุณาระบุว่าจะเข้าร่วมงานหรือไม่', nameError:'กรุณากรอกชื่อและนามสกุล', emailError:'กรุณากรอกอีเมลให้ถูกต้องหรือเว้นว่าง', successYes:'บันทึกคำตอบตัวอย่างไว้ในอุปกรณ์นี้เท่านั้น ยังไม่ได้ส่งถึงคู่บ่าวสาว', successNo:'บันทึกคำตอบตัวอย่างไว้ในอุปกรณ์นี้เท่านั้น ยังไม่ได้ส่งถึงคู่บ่าวสาว', calendar:'wedding-invitation.ics', code:'ไม่สามารถโหลดตัวสร้าง QR Code ได้ แต่ยังคัดลอกลิงก์ได้', qrText:'สแกนเพื่อดูรายละเอียดงาน', venueNote:'สถานที่ตัวอย่าง', ceremony:'พิธีเช้า', reception:'งานเลี้ยง' }
+  };
+  let language = 'en';
+  let agendaFilter = 'all';
+  const $ = (id) => document.getElementById(id);
+  const isPublic = /^https?:$/.test(location.protocol) && !['localhost','127.0.0.1','0.0.0.0'].includes(location.hostname) && !location.hostname.endsWith('.local');
+
+  function applyLanguage(next) {
+    language = next;
+    document.documentElement.lang = next;
+    document.querySelectorAll('[data-en][data-th]').forEach(el => { el.textContent = el.dataset[next]; });
+    $('languageButton').textContent = next === 'en' ? 'EN / TH' : 'TH / EN';
+    $('languageButton').setAttribute('aria-label', next === 'en' ? 'Switch language to Thai' : 'Switch language to English');
+    $('guestName').placeholder = next === 'en' ? 'Your name' : 'ชื่อและนามสกุล';
+    $('dietary').placeholder = next === 'en' ? 'Vegetarian, food allergy, etc.' : 'มังสวิรัติ แพ้อาหาร ฯลฯ';
+    $('message').placeholder = next === 'en' ? 'A little note for the couple...' : 'ข้อความถึงคู่บ่าวสาว';
+    $('dateMonth').textContent = $('dateMonth').dataset[next];
+    renderAgenda();
+    const status = $('rsvpStatus');
+    if (!status.hidden && status.dataset.attendance) status.textContent = translations[next][status.dataset.attendance === 'yes' ? 'successYes' : 'successNo'];
+  }
+
+  function renderAgenda() {
+    const list = $('agendaList');
+    list.replaceChildren();
+    const filtered = CONFIG.sessions.filter(item => agendaFilter === 'all' || item.group === agendaFilter);
+    filtered.forEach(item => {
+      const row = document.createElement('article'); row.className = 'agenda-row';
+      const time = document.createElement('div'); time.className = 'agenda-time'; time.textContent = item.time;
+      const text = document.createElement('div');
+      const title = document.createElement('div'); title.className = 'agenda-item-title'; title.textContent = item[language];
+      const note = document.createElement('div'); note.className = 'agenda-item-note'; note.textContent = item[language === 'en' ? 'noteEn' : 'noteTh'];
+      text.append(title,note);
+      const tag = document.createElement('div'); tag.className = 'agenda-tag'; tag.textContent = translations[language][item.group];
+      row.append(time,text,tag); list.append(row);
+    });
+    if (!filtered.length) { const p = document.createElement('p'); p.className = 'agenda-empty'; p.textContent='No events in this session'; list.append(p); }
+  }
+
+  function toggleAttendingFields() {
+    const attending = document.querySelector('input[name="attendance"]:checked')?.value === 'yes';
+    $('attendingFields').hidden = !attending;
+  }
+
+  function submitRsvp(event) {
+    event.preventDefault();
+    const name = $('guestName').value.trim();
+    const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+    const emailField = $('guestEmail');
+    const status = $('rsvpStatus');
+    status.hidden = false; status.style.borderColor='#d6b1a5';status.style.background='#fbf2ef';status.style.color='#76544e';
+    if (!name) { status.textContent = translations[language].nameError; $('guestName').focus(); return; }
+    if (!emailField.checkValidity()) { status.textContent = translations[language].emailError; emailField.focus(); return; }
+    if (!attendance) { status.textContent = translations[language].attendError; document.querySelector('input[name="attendance"]').focus(); return; }
+    const record = { name, email:emailField.value.trim(), attendance, count:attendance==='yes'?Number($('guestCount').value):0, session:attendance==='yes'?$('guestSession').value:null, dietary:attendance==='yes'?$('dietary').value.trim():'', note:$('message').value.trim(), savedAt:new Date().toISOString() };
+    let stored = false;
+    try { localStorage.setItem('wedding_guest_mvp_rsvp', JSON.stringify(record)); stored = true; }
+    catch(e) { /* Some privacy modes and sandbox previews disallow local storage. */ }
+    status.dataset.attendance = attendance;
+    status.style.borderColor='#b5cbb8';status.style.background='#f0f7ee';status.style.color='#526c57';
+    status.textContent = stored ? translations[language][attendance === 'yes' ? 'successYes' : 'successNo'] : (language === 'en' ? 'Form validated, but browser storage is unavailable. No response was saved or sent.' : 'ตรวจสอบข้อมูลแล้ว แต่เบราว์เซอร์ไม่อนุญาตให้บันทึก จึงไม่มีการบันทึกหรือส่งคำตอบ');
+  }
+
+  function pad(num) { return String(num).padStart(2,'0'); }
+  function utcIcs(date,time) {
+    const [year,month,day] = date.split('-').map(Number);
+    const [hour,minute] = time.split(':').map(Number);
+    const d = new Date(Date.UTC(year,month-1,day,hour-7,minute)); // CONFIG timezone: Asia/Bangkok (UTC+07:00), no DST.
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+  }
+  function escapeIcs(s) { return String(s).replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;'); }
+  function downloadCalendar() {
+    const title = `${CONFIG.couple.first} & ${CONFIG.couple.second} Wedding`;
+    const url = isPublic ? location.href.split('#')[0] : '';
+    const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Guest MVP//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',`UID:wedding-demo-${CONFIG.weddingDate}@local.example`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`,`DTSTART:${utcIcs(CONFIG.weddingDate,'09:00')}`,`DTEND:${utcIcs(CONFIG.weddingDate,'23:00')}`,`SUMMARY:${escapeIcs(title)}`,`DESCRIPTION:${escapeIcs('Wedding celebration. Sample template details; confirm schedule and location before attending.')}`,`LOCATION:${escapeIcs(CONFIG.venue+', '+CONFIG.city)}`, ...(url ? [`URL:${url}`] : []),'END:VEVENT','END:VCALENDAR'];
+    const blob = new Blob([lines.join('\r\n')+'\r\n'], {type:'text/calendar;charset=utf-8'});
+    const urlObj = URL.createObjectURL(blob); const link = document.createElement('a'); link.href=urlObj;link.download=translations[language].calendar;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(urlObj),1000);
+  }
+
+  async function copyPublicLink() {
+    const status=$('shareStatus');
+    if (!isPublic) { status.textContent=translations[language].local; return; }
+    try { await navigator.clipboard.writeText(location.href.split('#')[0]); status.textContent=translations[language].copied; }
+    catch(e) { status.textContent=translations[language].copyFailed; }
+  }
+
+  function renderQR() {
+    if (!isPublic) return;
+    if (typeof QRCode === 'undefined') {
+      $('qrCaption').textContent=translations[language].code; return;
+    }
+    const container=$('qrContainer'); container.replaceChildren();
+    new QRCode(container,{ text:location.href.split('#')[0], width:166, height:166, colorDark:'#3d5542', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
+    $('qrCaption').textContent=translations[language].qrText;
+  }
+
+  // Hero and gallery use ordinary local image files. No upload service is required.
+  // If the image does not exist, preserve the original decorative illustration.
+  function loadWeddingPhotos() {
+    const heroPath = CONFIG.photos?.hero;
+    if (heroPath) {
+      const hero = $('heroPhoto');
+      hero.onload = () => {
+        hero.style.objectPosition = CONFIG.photos.heroPosition || 'center';
+        hero.parentElement.classList.add('photo-active');
+      };
+      hero.onerror = () => { hero.parentElement.classList.remove('photo-active'); };
+      hero.src = heroPath;
+    }
+
+    const entries = CONFIG.photos?.gallery || [];
+    const photosLoaded = new Map();
+    const grid = $('galleryGrid');
+    const section = $('gallery');
+    entries.forEach((entry, index) => {
+      if (!entry.src) return;
+      const photo = new Image();
+      photo.alt = entry.en || 'Wedding memory';
+      // Eager preloading is required until the image is inserted into the page.
+      photo.loading = 'eager';
+      photo.decoding = 'async';
+      photo.onload = () => {
+        photosLoaded.set(index, { entry, photo });
+        grid.replaceChildren();
+        [...photosLoaded.entries()].sort((a,b) => a[0]-b[0]).forEach(([, record]) => {
+          const figure = document.createElement('figure');
+          figure.className = 'gallery-item';
+          const caption = document.createElement('figcaption');
+          caption.dataset.en = record.entry.en || '';
+          caption.dataset.th = record.entry.th || record.entry.en || '';
+          caption.textContent = caption.dataset[language];
+          figure.append(record.photo, caption);
+          grid.append(figure);
+        });
+        section.hidden = false;
+      };
+      photo.onerror = () => { /* An unprovided optional photo stays hidden. */ };
+      photo.src = entry.src;
+    });
+  }
+
+  function start() {
+    loadWeddingPhotos();
+    $('firstName').textContent=CONFIG.couple.first;
+    $('secondName').textContent=CONFIG.couple.second;
+    $('footerCouple').textContent=`${CONFIG.couple.first} & ${CONFIG.couple.second}`;
+    document.title=`${CONFIG.couple.first} & ${CONFIG.couple.second} — Wedding Invitation`;
+    const day=new Date(CONFIG.weddingDate+'T12:00:00+07:00');
+    $('heroDate').textContent=`${new Intl.DateTimeFormat('en-US',{timeZone:CONFIG.timezone,weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(day)} · ${CONFIG.city}`;
+    const deadline=new Date(CONFIG.rsvpDeadline+'T12:00:00+07:00');
+    $('deadlineLabel').textContent=new Intl.DateTimeFormat('en-US',{timeZone:CONFIG.timezone,month:'long',day:'numeric',year:'numeric'}).format(deadline);
+    $('venueTitle').textContent=CONFIG.venue;
+    $('venueAddress').textContent=CONFIG.venueAddress;
+    $('venueDescription').dataset.en = CONFIG.venueDescriptionEn; $('venueDescription').dataset.th = CONFIG.venueDescriptionTh;
+    $('dressCode').dataset.en = CONFIG.dressCodeEn; $('dressCode').dataset.th = CONFIG.dressCodeTh;
+    $('arrivalNote').dataset.en = CONFIG.arrivalEn; $('arrivalNote').dataset.th = CONFIG.arrivalTh;
+    const dateForDisplay = new Intl.DateTimeFormat('en-US',{timeZone:CONFIG.timezone,weekday:'long',month:'long',day:'numeric',year:'numeric'}).format(day);
+    $('verticalDate').textContent=dateForDisplay.replaceAll(',',' ·');
+    const [year,month,dayNum] = CONFIG.weddingDate.split('-').map(Number);
+    const monthNameEn=new Intl.DateTimeFormat('en-US',{month:'short',timeZone:CONFIG.timezone}).format(day);
+    const monthNameTh=new Intl.DateTimeFormat('th-TH',{month:'short',timeZone:CONFIG.timezone}).format(day);
+    $('dateMonth').dataset.en=monthNameEn; $('dateMonth').dataset.th=monthNameTh;
+    $('dateDay').textContent=String(dayNum); $('dateYear').textContent=String(year);
+    $('sideDay').textContent=new Intl.DateTimeFormat('en-US',{weekday:'long',timeZone:CONFIG.timezone}).format(day).toUpperCase();
+    $('sideDate').textContent=String(dayNum);
+    $('sideMonthYear').textContent=new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric',timeZone:CONFIG.timezone}).format(day).toUpperCase();
+    $('directionsLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(CONFIG.mapQuery);
+    $('languageButton').addEventListener('click',()=>applyLanguage(language==='en'?'th':'en'));
+    document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{agendaFilter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));renderAgenda();}));
+    document.querySelectorAll('input[name="attendance"]').forEach(button=>button.addEventListener('change',toggleAttendingFields));
+    $('rsvpForm').addEventListener('submit',submitRsvp);
+    $('calendarButton').addEventListener('click',downloadCalendar);
+    $('shareButton').addEventListener('click',copyPublicLink);
+    applyLanguage('en');
+    // CDNs may load after DOMContentLoaded. Only generate public QR after the dependency loads.
+    window.addEventListener('load',renderQR);
+    if (document.readyState === 'complete') renderQR();
+  }
+  document.addEventListener('DOMContentLoaded',start);
+  </script>
+</body>
+</html>
